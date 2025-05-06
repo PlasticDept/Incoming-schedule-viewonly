@@ -91,8 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loadAirtableData();
 
-  setInterval(() => {
+  /*!--setInterval(() => {
     console.log('Refreshing data...');
     loadAirtableData();
-  }, 5000);
+  }, 5000);*/
 });
