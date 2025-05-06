@@ -14,21 +14,27 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function getStatusProgress(timeIn, unloadingTime, finish) {
-    timeIn = typeof timeIn === 'string' ? timeIn.trim() : (timeIn ? String(timeIn).trim() : "");
-    unloadingTime = typeof unloadingTime === 'string' ? unloadingTime.trim() : (unloadingTime ? String(unloadingTime).trim() : "");
-    finish = typeof finish === 'string' ? finish.trim() : (finish ? String(finish).trim() : "");
+  timeIn = typeof timeIn === 'string' ? timeIn.trim() : (timeIn ? String(timeIn).trim() : "");
+  unloadingTime = typeof unloadingTime === 'string' ? unloadingTime.trim() : (unloadingTime ? String(unloadingTime).trim() : "");
+  finish = typeof finish === 'string' ? finish.trim() : (finish ? String(finish).trim() : "");
 
-    const allEmpty = [timeIn, unloadingTime, finish].every(val => val === "");
-    const allDash = [timeIn, unloadingTime, finish].every(val => val === "-");
-
-    if (allEmpty) return "Outstanding";
-    if (allDash) return "Reschedule";
-    if (timeIn && timeIn !== "-" && (!unloadingTime || unloadingTime === "-")) return "Waiting";
-    if (timeIn && unloadingTime && timeIn !== "-" && unloadingTime !== "-" && (!finish || finish === "-")) return "Processing";
-    if (timeIn && unloadingTime && finish && timeIn !== "-" && unloadingTime !== "-" && finish !== "-") return "Finish";
-
-    return "";
+  // Tambahan kondisi: jika salah satu bernilai "0", maka status Reschedule
+  if ([timeIn, unloadingTime, finish].some(val => val === "0")) {
+    return "Reschedule";
   }
+
+  const allEmpty = [timeIn, unloadingTime, finish].every(val => val === "");
+  const allDash = [timeIn, unloadingTime, finish].every(val => val === "-");
+
+  if (allEmpty) return "Outstanding";
+  if (allDash) return "Reschedule";
+  if (timeIn && timeIn !== "-" && (!unloadingTime || unloadingTime === "-")) return "Waiting";
+  if (timeIn && unloadingTime && timeIn !== "-" && unloadingTime !== "-" && (!finish || finish === "-")) return "Processing";
+  if (timeIn && unloadingTime && finish && timeIn !== "-" && unloadingTime !== "-" && finish !== "-") return "Finish";
+
+  return "";
+}
+
 
   function renderRow(row, index, id) {
     if (!row || !row["FEET"] || !row["PACKAGE"]) return "";
