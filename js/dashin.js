@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function loadFirebaseData() {
-  db.ref("incoming_schedule").on("value", snapshot => {
+  database.ref("incoming_schedule").on("value", snapshot => {
     const data = snapshot.val() || {};
     table.clear();
 
@@ -112,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.error("❌ Gagal ambil data realtime dari Firebase:", error);
   });
 }
+
 
 
   // Load data dari Firebase saat halaman siap
