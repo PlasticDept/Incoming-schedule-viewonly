@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+  $.fn.dataTable.moment('HH:mm'); // atau 'HH:mm:ss' kalau pakai detik
+
   const table = $("#containerTable").DataTable({
     order: [[12, 'asc']] // kolom ke-12 (index ke-11) = "Time In"
   });
