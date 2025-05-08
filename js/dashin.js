@@ -91,24 +91,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function loadFirebaseData() {
-    const ref = database.ref('incoming_schedule'); // ✅ Perbaikan path
+  db.ref("incoming_schedule").on("value", snapshot => {
+    const data = snapshot.val() || {};
+    table.clear();
 
-    ref.once('value')
-      .then(snapshot => {
-        const data = snapshot.val();
-        table.clear();
+    let index = 0;
+    for (const id in data) {
+      const row = data[id];
+      const html = renderRow(row, index++, id);
+      if (html) table.row.add($(html));
+    }
 
-        let index = 0;
-        for (const id in data) {
-          const row = data[id];
-          const html = renderRow(row, index++, id);
-          if (html) table.row.add($(html));
-        }
+    table.draw();
+    table.on('order.dt search.dt', function () {
+      table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+        cell.innerHTML = i + 1;
+      });
+    }).draw();
+  }, error => {
+    console.error("❌ Gagal ambil data realtime dari Firebase:", error);
+  });
+}
 
-        table.draw();
-      })
-      .catch(err => console.error("❌ Gagal ambil data dari Firebase:", err));
-  }
 
   // Load data dari Firebase saat halaman siap
   loadFirebaseData();
