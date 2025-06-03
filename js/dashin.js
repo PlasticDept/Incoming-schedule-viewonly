@@ -24,9 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
     unloadingTime = (unloadingTime || "").trim();
     finish = (finish || "").trim();
     if ([timeIn, unloadingTime, finish].some(val => val === "0")) return "Reschedule";
-    if ([timeIn, unloadingTime, finish].every(val => val === "")) return "Outstanding";
+    if ([timeIn, unloadingTime, finish].every(val => val === "")) return "Waiting";
     if ([timeIn, unloadingTime, finish].every(val => val === "-")) return "Reschedule";
-    if (timeIn && (!unloadingTime || unloadingTime === "-")) return "Waiting";
+    if (timeIn && (!unloadingTime || unloadingTime === "-")) return "Outstanding";
     if (timeIn && unloadingTime && (!finish || finish === "-")) return "Processing";
     if (timeIn && unloadingTime && finish) return "Finish";
     return "";
